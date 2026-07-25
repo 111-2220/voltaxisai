@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VoltAxis AI — AI-Powered Growth for Modern Solar Installers</title>
+<meta name="description" content="VoltAxis AI builds AI systems that qualify homeowners, analyze roofs, and book qualified solar consultations 24/7.">
+<meta name="theme-color" content="#0B0F19">
+<meta property="og:title" content="VoltAxis AI — AI-Powered Growth for Modern Solar Installers">
+<meta property="og:description" content="AI that qualifies homeowners, analyzes roofs, and books qualified solar consultations 24/7.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2338BDF8'/%3E%3Cstop offset='1' stop-color='%2300E676'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='%230B0F19'/%3E%3Cpath d='M55 15 L25 55 H45 L40 85 L75 40 H55 Z' fill='url(%23g)'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+:root{
+  --bg:#0B0F19; --bg2:#111827; --cyan:#38BDF8; --green:#00E676; --white:#FFFFFF; --gray:#94A3B8;
+  --mx:50%; --my:50%;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0; background:var(--bg); color:var(--white);
+  font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+h1,h2,h3,.display{font-family:'Manrope',sans-serif;}
+::selection{background:var(--cyan); color:var(--bg);}
+
+/* scroll progress */
+#progress{position:fixed; top:0; left:0; height:3px; background:linear-gradient(90deg,var(--cyan),var(--green)); z-index:9999; width:0%; transition:width .1s linear;}
+
+/* grid background */
+.grid-bg{
+  position:fixed; inset:0; z-index:0; pointer-events:none;
+  background-image:linear-gradient(rgba(148,163,184,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(148,163,184,.06) 1px, transparent 1px);
+  background-size:48px 48px;
+  mask-image:radial-gradient(ellipse 80% 60% at 50% 20%, black 20%, transparent 75%);
+}
+
+/* orbs */
+.orb{position:fixed; border-radius:50%; filter:blur(90px); z-index:0; pointer-events:none; opacity:.35;}
+.orb1{width:520px; height:520px; background:var(--cyan); top:-120px; left:-140px; animation:float1 18s ease-in-out infinite;}
+.orb2{width:460px; height:460px; background:var(--green); bottom:-160px; right:-120px; animation:float2 22s ease-in-out infinite;}
+.orb3{width:380px; height:380px; background:var(--cyan); top:40%; right:20%; animation:float1 26s ease-in-out infinite reverse; opacity:.2;}
+@keyframes float1{0%,100%{transform:translate(0,0);}50%{transform:translate(60px,40px);}}
+@keyframes float2{0%,100%{transform:translate(0,0);}50%{transform:translate(-50px,-60px);}}
+
+/* mouse glow */
+.mouse-glow{position:fixed; inset:0; z-index:1; pointer-events:none;
+  background:radial-gradient(600px circle at var(--mx) var(--my), rgba(56,189,248,.08), transparent 40%);
+}
+
+section, header, footer{position:relative; z-index:2;}
+
+/* glass */
+.glass{
+  background:rgba(17,24,39,.55);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border:1px solid rgba(148,163,184,.12);
+}
+.card{
+  border-radius:20px; padding:28px; transition:transform .4s cubic-bezier(.2,.8,.2,1), border-color .4s, box-shadow .4s;
+}
+.card:hover{transform:translateY(-6px); border-color:rgba(56,189,248,.4); box-shadow:0 20px 60px -20px rgba(56,189,248,.35);}
+
+.grad-border{
+  position:relative; border-radius:20px; padding:1px;
+  background:linear-gradient(135deg, rgba(56,189,248,.5), rgba(0,230,118,.3), rgba(56,189,248,0));
+}
+.grad-border > div{border-radius:19px; background:var(--bg2); height:100%;}
+
+.btn-primary{
+  background:linear-gradient(135deg,var(--cyan),var(--green));
+  color:#04121a; font-weight:700; border-radius:12px; padding:14px 28px;
+  transition:transform .25s, box-shadow .25s; display:inline-flex; align-items:center; gap:8px;
+  box-shadow:0 8px 30px -8px rgba(56,189,248,.5);
+}
+.btn-primary:hover{transform:translateY(-2px) scale(1.02); box-shadow:0 14px 40px -8px rgba(56,189,248,.7);}
+.btn-ghost{
+  border:1px solid rgba(148,163,184,.25); border-radius:12px; padding:14px 28px; color:var(--white);
+  transition:border-color .25s, background .25s;
+}
+.btn-ghost:hover{border-color:var(--cyan); background:rgba(56,189,248,.06);}
+
+.eyebrow{
+  font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--cyan); font-weight:700;
+}
+
+.reveal{opacity:0; transform:translateY(28px); transition:opacity .8s cubic-bezier(.2,.8,.2,1), transform .8s cubic-bezier(.2,.8,.2,1);}
+.reveal.in{opacity:1; transform:translateY(0);}
+
+.glow-text{
+  background:linear-gradient(135deg,#fff 20%, var(--cyan) 60%, var(--green) 100%);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+
+nav a{color:var(--gray); transition:color .2s;}
+nav a:hover{color:var(--white);}
+
+.logo-track{display:flex; width:max-content; animation:scrollLogos 28s linear infinite;}
+@keyframes scrollLogos{from{transform:translateX(0);} to{transform:translateX(-50%);}}
+
+.dot{width:6px;height:6px;border-radius:50%;background:var(--green); box-shadow:0 0 8px var(--green); display:inline-block;}
+
+/* accordion */
+.acc-item .acc-body{max-height:0; overflow:hidden; transition:max-height .4s ease;}
+.acc-item.open .acc-body{max-height:220px;}
+.acc-item .chev{transition:transform .3s;}
+.acc-item.open .chev{transform:rotate(45deg);}
+
+/* mobile menu */
+#mobileMenu{max-height:0; overflow:hidden; transition:max-height .4s ease;}
+#mobileMenu.open{max-height:400px;}
+.hamburger span{display:block; width:22px; height:2px; background:var(--white); margin:5px 0; transition:.3s;}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+.timeline-line{background:linear-gradient(180deg, var(--cyan), var(--green)); width:2px;}
+
+@media (max-width:768px){
+  .orb1,.orb2,.orb3{filter:blur(60px); opacity:.25;}
+}
+@media (prefers-reduced-motion: reduce){
+  .orb1,.orb2,.orb3,.logo-track{animation:none;}
+  .reveal{transition:none; opacity:1; transform:none;}
+  html{scroll-behavior:auto;}
+}
+:focus-visible{outline:2px solid var(--cyan); outline-offset:3px; border-radius:6px;}
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+<div class="grid-bg"></div>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
+<div class="mouse-glow" id="mouseGlow"></div>
+
+<!-- NAV -->
+<header class="fixed top-0 left-0 right-0 z-50">
+  <div class="glass mx-4 mt-4 rounded-2xl px-5 md:px-8 py-4 flex items-center justify-between">
+    <a href="#" class="flex items-center gap-2 font-extrabold text-lg tracking-tight">
+      <svg width="16" height="16" viewBox="0 0 100 100"><path d="M55 15 L25 55 H45 L40 85 L75 40 H55 Z" fill="var(--cyan)"/></svg> VoltAxis <span class="glow-text">AI</span>
+    </a>
+    <nav class="hidden md:flex gap-8 text-sm font-medium">
+      <a href="#why">Why Us</a>
+      <a href="#deliver">Services</a>
+      <a href="#cases">Case Studies</a>
+      <a href="#testimonials">Testimonials</a>
+      <a href="#faq">FAQ</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a href="#contact" class="hidden md:inline-flex btn-primary !py-2.5 !px-5 text-sm">Book a Call</a>
+    <button id="hamburgerBtn" class="hamburger md:hidden"><span></span><span></span><span></span></button>
+  </div>
+  <div id="mobileMenu" class="glass mx-4 mt-2 rounded-2xl md:hidden">
+    <div class="flex flex-col p-5 gap-4 text-sm font-medium">
+      <a href="#why">Why Us</a>
+      <a href="#deliver">Services</a>
+      <a href="#cases">Case Studies</a>
+      <a href="#testimonials">Testimonials</a>
+      <a href="#faq">FAQ</a>
+      <a href="#contact" class="btn-primary !py-2.5 justify-center">Book a Call</a>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="pt-44 pb-24 px-5 md:px-10 max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+  <div class="reveal">
+    <div class="eyebrow mb-5">AI Lead Generation for Solar Installers</div>
+    <h1 class="text-4xl md:text-6xl font-extrabold leading-[1.08] tracking-tight mb-6">
+      Stop Chasing Solar Leads.<br>
+      <span class="glow-text">Start Closing Qualified Appointments.</span>
+    </h1>
+    <p class="text-lg text-[var(--gray)] leading-relaxed mb-9 max-w-xl">
+      We build AI systems that automatically qualify homeowners, analyze roofs, answer every question instantly, estimate savings, and book high-intent solar consultations directly onto your calendar — 24/7.
+    </p>
+    <div class="flex flex-wrap gap-4">
+      <a href="#contact" class="btn-primary">Book a Free Strategy Call →</a>
+      <a href="#how" class="btn-ghost">See How It Works</a>
+    </div>
+  </div>
+
+  <div class="reveal" style="transition-delay:.15s">
+    <div class="grad-border">
+      <div class="p-6 space-y-4">
+        <div class="flex items-center justify-between text-xs text-[var(--gray)] mb-2">
+          <span>VoltAxis Control Center</span><span class="dot"></span>
+        </div>
+        <div class="card glass !p-4 flex items-center justify-between">
+          <div>
+            <div class="text-xs text-[var(--gray)]">AI Conversation</div>
+            <div class="text-sm font-semibold mt-1">"What's my payback period?"</div>
+          </div>
+          <span class="text-xs px-2 py-1 rounded-full bg-[rgba(0,230,118,.12)] text-[var(--green)]">Live</span>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="card glass !p-4">
+            <div class="text-xs text-[var(--gray)]">Roof Analysis</div>
+            <div class="text-2xl font-extrabold mt-1 glow-text">South-Facing</div>
+            <div class="text-xs text-[var(--gray)] mt-1">Shading: Minimal</div>
+          </div>
+          <div class="card glass !p-4">
+            <div class="text-xs text-[var(--gray)]">Lead Score</div>
+            <div class="text-2xl font-extrabold mt-1 text-[var(--green)]">92 / 100</div>
+            <div class="text-xs text-[var(--gray)] mt-1">Qualified</div>
+          </div>
+        </div>
+        <div class="card glass !p-4">
+          <div class="text-xs text-[var(--gray)] mb-2">Savings Estimate</div>
+          <div class="flex justify-between text-sm"><span>Monthly Savings</span><span class="font-bold text-[var(--cyan)]">$184</span></div>
+          <div class="flex justify-between text-sm mt-1"><span>25-Year ROI</span><span class="font-bold text-[var(--green)]">$54,200</span></div>
+        </div>
+        <div class="card glass !p-4 flex items-center justify-between">
+          <div class="text-sm">📅 Consultation booked — Tue 2:00 PM</div>
+          <span class="text-xs text-[var(--gray)]">→ CRM synced</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOCIAL PROOF -->
+<section class="py-10 border-y border-white/5 overflow-hidden reveal">
+  <p class="text-center text-xs uppercase tracking-widest text-[var(--gray)] mb-8">Trusted by growing solar companies</p>
+  <div class="logo-track opacity-70 text-xl font-bold tracking-tight">
+    <span class="mx-10">SolarFlow Energy</span><span class="mx-10">SunGrid Solutions</span><span class="mx-10">BrightVolt Solar</span><span class="mx-10">HelioPeak</span><span class="mx-10">Voltaic Homes</span><span class="mx-10">SolarFlow Energy</span><span class="mx-10">SunGrid Solutions</span><span class="mx-10">BrightVolt Solar</span><span class="mx-10">HelioPeak</span><span class="mx-10">Voltaic Homes</span>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section id="why" class="py-28 px-5 md:px-10 max-w-7xl mx-auto">
+  <div class="text-center mb-16 reveal">
+    <div class="eyebrow mb-4">Why Us</div>
+    <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight">Why Solar Companies Choose <span class="glow-text">VoltAxis AI</span></h2>
+  </div>
+  <div class="grid md:grid-cols-3 gap-6">
+    <!-- items injected by JS-free static -->
+    <div class="grad-border reveal"><div class="card"><div class="text-[var(--green)] text-2xl mb-3">✓</div><h3 class="font-bold mb-2">Never Waste Time</h3><p class="text-sm text-[var(--gray)]">On unqualified leads that were never going to convert.</p></div></div>
+    <div class="grad-border reveal" style="transition-delay:.05s"><div class="card"><div class="text-[var(--green)] text-2xl mb-3">✓</div><h3 class="font-bold mb-2">AI Replies in Seconds</h3><p class="text-sm text-[var(--gray)]">No lead waits — every message answered instantly, day or night.</p></div></div>
+    <div class="grad-border reveal" style="transition-delay:.1s"><div class="card"><div class="text-[var(--green)] text-2xl mb-3">✓</div><h3 class="font-bold mb-2">Appointments, Not Lists</h3><p class="text-sm text-[var(--gray)]">Your team gets booked consultations, not cold contact lists.</p></div></div>
+    <div class="grad-border reveal" style="transition-delay:.15s"><div class="card"><div class="text-[var(--green)] text-2xl mb-3">✓</div><h3 class="font-bold mb-2">Lower Cost Per Acquisition</h3><p class="text-sm text-[var(--gray)]">Automation replaces expensive manual qualification work.</p></div></div>
+    <div class="grad-border reveal" style="transition-delay:.2s"><div class="card"><div class="text-[var(--green)] text-2xl mb-3">✓</div><h3 class="font-bold mb-2">Higher Close Rates</h3><p class="text-sm text-[var(--gray)]">Reps only speak to homeowners who are ready to buy.</p></div></div>
+    <div class="grad-border reveal" style="transition-delay:.25s"><div class="card"><div class="text-[var(--green)] text-2xl mb-3">✓</div><h3 class="font-bold mb-2">Fully Automated Follow-Up</h3><p class="text-sm text-[var(--gray)]">No lead ever falls through the cracks again.</p></div></div>
+  </div>
+</section>
+
+<!-- WHAT WE DELIVER -->
+<section id="deliver" class="py-28 px-5 md:px-10 max-w-7xl mx-auto">
+  <div class="text-center mb-16 reveal">
+    <div class="eyebrow mb-4">What We Deliver</div>
+    <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight">A Complete <span class="glow-text">AI Growth Engine</span></h2>
+  </div>
+  <div class="space-y-6">
+    <div class="grad-border reveal"><div class="card md:flex gap-8 items-start">
+      <div class="text-4xl font-extrabold glow-text mb-4 md:mb-0 md:w-24">01</div>
+      <div><h3 class="text-xl font-bold mb-2">Automated Property & Roof Qualification</h3>
+      <p class="text-[var(--gray)] leading-relaxed">Every lead is intelligently verified before reaching your sales team. Our AI evaluates satellite imagery, roof orientation, shading, ownership status, estimated energy consumption, and utility requirements — eliminating renters and poor-fit properties before they ever enter your pipeline.</p></div>
+    </div></div>
+    <div class="grad-border reveal"><div class="card md:flex gap-8 items-start">
+      <div class="text-4xl font-extrabold glow-text mb-4 md:mb-0 md:w-24">02</div>
+      <div><h3 class="text-xl font-bold mb-2">24/7 AI Lead Engagement</h3>
+      <p class="text-[var(--gray)] leading-relaxed">The moment someone becomes a lead, our AI engages them across SMS, WhatsApp, website chat, and voice. It instantly answers solar questions, explains available incentives, qualifies motivation, and even reads uploaded electricity bills to calculate accurate energy requirements. Your business never misses another opportunity.</p></div>
+    </div></div>
+    <div class="grad-border reveal"><div class="card md:flex gap-8 items-start">
+      <div class="text-4xl font-extrabold glow-text mb-4 md:mb-0 md:w-24">03</div>
+      <div><h3 class="text-xl font-bold mb-2">Instant Solar Savings & ROI Estimates</h3>
+      <p class="text-[var(--gray)] leading-relaxed">Prospects receive personalized financial projections within minutes. Using their address and utility information, our AI creates estimated panel layouts, projected monthly savings, payback periods, and long-term 25-year ROI — building confidence before your sales call even begins.</p></div>
+    </div></div>
+    <div class="grad-border reveal"><div class="card md:flex gap-8 items-start">
+      <div class="text-4xl font-extrabold glow-text mb-4 md:mb-0 md:w-24">04</div>
+      <div><h3 class="text-xl font-bold mb-2">Autonomous Appointment Booking</h3>
+      <p class="text-[var(--gray)] leading-relaxed">Forget chasing leads. Our AI schedules qualified consultations directly into your team's calendar, sends reminders, handles rescheduling, confirms attendance, and nurtures prospects before every meeting — dramatically reducing no-shows.</p></div>
+    </div></div>
+    <div class="grad-border reveal"><div class="card md:flex gap-8 items-start">
+      <div class="text-4xl font-extrabold glow-text mb-4 md:mb-0 md:w-24">05</div>
+      <div><h3 class="text-xl font-bold mb-2">Deep CRM Automation</h3>
+      <p class="text-[var(--gray)] leading-relaxed">Every interaction is automatically synchronized with your CRM. Conversation history, qualification status, roof reports, utility analysis, appointment details, and AI lead scores are pushed into HubSpot, GoHighLevel, Salesforce, OpenSolar, and other major platforms — ensuring your team always focuses on the highest-value opportunities first.</p></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how" class="py-28 px-5 md:px-10 max-w-4xl mx-auto">
+  <div class="text-center mb-16 reveal">
+    <div class="eyebrow mb-4">How It Works</div>
+    <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight">From First Message to <span class="glow-text">Booked Appointment</span></h2>
+  </div>
+  <div class="relative pl-10">
+    <div class="timeline-line absolute left-0 top-2 bottom-2"></div>
+    <div class="space-y-12">
+      <div class="reveal relative"><div class="absolute -left-[46px] top-1 w-4 h-4 rounded-full bg-[var(--cyan)] shadow-[0_0_16px_var(--cyan)]"></div><div class="eyebrow mb-1">Step 1</div><h3 class="text-xl font-bold">Lead comes in</h3></div>
+      <div class="reveal relative"><div class="absolute -left-[46px] top-1 w-4 h-4 rounded-full bg-[var(--cyan)] shadow-[0_0_16px_var(--cyan)]"></div><div class="eyebrow mb-1">Step 2</div><h3 class="text-xl font-bold">AI qualifies instantly</h3></div>
+      <div class="reveal relative"><div class="absolute -left-[46px] top-1 w-4 h-4 rounded-full bg-[var(--cyan)] shadow-[0_0_16px_var(--cyan)]"></div><div class="eyebrow mb-1">Step 3</div><h3 class="text-xl font-bold">Roof analyzed</h3></div>
+      <div class="reveal relative"><div class="absolute -left-[46px] top-1 w-4 h-4 rounded-full bg-[var(--green)] shadow-[0_0_16px_var(--green)]"></div><div class="eyebrow mb-1">Step 4</div><h3 class="text-xl font-bold">Savings estimated</h3></div>
+      <div class="reveal relative"><div class="absolute -left-[46px] top-1 w-4 h-4 rounded-full bg-[var(--green)] shadow-[0_0_16px_var(--green)]"></div><div class="eyebrow mb-1">Step 5</div><h3 class="text-xl font-bold">Appointment booked</h3></div>
+      <div class="reveal relative"><div class="absolute -left-[46px] top-1 w-4 h-4 rounded-full bg-[var(--green)] shadow-[0_0_16px_var(--green)]"></div><div class="eyebrow mb-1">Step 6</div><h3 class="text-xl font-bold">Sales team closes deal</h3></div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section class="py-28 px-5 md:px-10 max-w-7xl mx-auto">
+  <div class="grad-border reveal">
+    <div class="card grid grid-cols-2 md:grid-cols-4 gap-8 text-center py-14">
+      <div><div class="text-4xl md:text-5xl font-extrabold glow-text counter" data-target="10000" data-suffix="+">0</div><div class="text-sm text-[var(--gray)] mt-2">Qualified Leads Generated</div></div>
+      <div><div class="text-4xl md:text-5xl font-extrabold glow-text counter" data-target="98" data-suffix="%">0</div><div class="text-sm text-[var(--gray)] mt-2">Response Rate</div></div>
+      <div><div class="text-4xl md:text-5xl font-extrabold glow-text">24/7</div><div class="text-sm text-[var(--gray)] mt-2">AI Availability</div></div>
+      <div><div class="text-4xl md:text-5xl font-extrabold glow-text counter" data-target="5" data-suffix="x">0</div><div class="text-sm text-[var(--gray)] mt-2">Faster Follow-up</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CASE STUDIES -->
+<section id="cases" class="py-28 px-5 md:px-10 max-w-7xl mx-auto">
+  <div class="text-center mb-16 reveal">
+    <div class="eyebrow mb-4">Case Studies</div>
+    <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight">Results That Speak <span class="glow-text">for Themselves</span></h2>
+  </div>
+  <div class="grid md:grid-cols-3 gap-6">
+    <div class="grad-border reveal"><div class="card">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-11 h-11 rounded-full bg-gradient-to-br from-[var(--cyan)] to-[var(--green)]"></div>
+        <div><div class="font-bold text-sm">SolarFlow Energy</div><div class="text-xs text-[var(--gray)]">★★★★★</div></div>
+      </div>
+      <p class="text-sm text-[var(--gray)] leading-relaxed">"Appointments increased by 280% while reducing acquisition costs by 43%."</p>
+    </div></div>
+    <div class="grad-border reveal" style="transition-delay:.05s"><div class="card">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-11 h-11 rounded-full bg-gradient-to-br from-[var(--green)] to-[var(--cyan)]"></div>
+        <div><div class="font-bold text-sm">SunGrid Solutions</div><div class="text-xs text-[var(--gray)]">★★★★★</div></div>
+      </div>
+      <p class="text-sm text-[var(--gray)] leading-relaxed">"Our sales team only speaks to qualified homeowners now."</p>
+    </div></div>
+    <div class="grad-border reveal" style="transition-delay:.1s"><div class="card">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-11 h-11 rounded-full bg-gradient-to-br from-[var(--cyan)] to-[var(--green)]"></div>
+        <div><div class="font-bold text-sm">BrightVolt Solar</div><div class="text-xs text-[var(--gray)]">★★★★★</div></div>
+      </div>
+      <p class="text-sm text-[var(--gray)] leading-relaxed">"We doubled our monthly installations within 90 days."</p>
+    </div></div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials" class="py-28 px-5 md:px-10 max-w-5xl mx-auto">
+  <div class="text-center mb-16 reveal">
+    <div class="eyebrow mb-4">Testimonials</div>
+    <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight">Loved by <span class="glow-text">Solar Companies</span></h2>
+  </div>
+  <div class="relative overflow-hidden">
+    <div id="testiTrack" class="flex transition-transform duration-700 ease-out">
+      <!-- slides injected by JS -->
+    </div>
+    <div class="flex justify-center gap-2 mt-8" id="testiDots"></div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="py-28 px-5 md:px-10 max-w-3xl mx-auto">
+  <div class="text-center mb-16 reveal">
+    <div class="eyebrow mb-4">FAQ</div>
+    <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight">Questions, <span class="glow-text">Answered</span></h2>
+  </div>
+  <div class="space-y-4" id="faqList">
+    <div class="acc-item glass card reveal !p-0">
+      <button class="acc-head w-full flex justify-between items-center p-5 text-left font-semibold">How quickly can we start?<span class="chev text-[var(--cyan)] text-xl">+</span></button>
+      <div class="acc-body px-5"><p class="text-sm text-[var(--gray)] pb-5">Most agencies go live within 7–14 days, including full setup, integration, and testing.</p></div>
+    </div>
+    <div class="acc-item glass card reveal !p-0">
+      <button class="acc-head w-full flex justify-between items-center p-5 text-left font-semibold">Will it work with our CRM?<span class="chev text-[var(--cyan)] text-xl">+</span></button>
+      <div class="acc-body px-5"><p class="text-sm text-[var(--gray)] pb-5">Yes. We integrate with HubSpot, Salesforce, OpenSolar, and most modern CRMs used by solar companies.</p></div>
+    </div>
+    <div class="acc-item glass card reveal !p-0">
+      <button class="acc-head w-full flex justify-between items-center p-5 text-left font-semibold">Do you integrate with GoHighLevel?<span class="chev text-[var(--cyan)] text-xl">+</span></button>
+      <div class="acc-body px-5"><p class="text-sm text-[var(--gray)] pb-5">Yes, GoHighLevel is one of our most common native integrations.</p></div>
+    </div>
+    <div class="acc-item glass card reveal !p-0">
+      <button class="acc-head w-full flex justify-between items-center p-5 text-left font-semibold">Can AI answer customer questions?<span class="chev text-[var(--cyan)] text-xl">+</span></button>
+      <div class="acc-body px-5"><p class="text-sm text-[var(--gray)] pb-5">Our AI handles solar-specific questions instantly — incentives, savings, installation timelines, and more.</p></div>
+    </div>
+    <div class="acc-item glass card reveal !p-0">
+      <button class="acc-head w-full flex justify-between items-center p-5 text-left font-semibold">What if someone wants a human?<span class="chev text-[var(--cyan)] text-xl">+</span></button>
+      <div class="acc-body px-5"><p class="text-sm text-[var(--gray)] pb-5">The AI hands off to your sales team instantly whenever a prospect asks for a human, no friction.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section id="contact" class="py-28 px-5 md:px-10 max-w-5xl mx-auto">
+  <div class="grad-border reveal">
+    <div class="card text-center py-16 px-6">
+      <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-5">Ready to Fill Your Calendar With <span class="glow-text">Qualified Solar Appointments?</span></h2>
+      <p class="text-[var(--gray)] max-w-xl mx-auto mb-9">Let AI handle qualification, follow-up, and booking while your sales team focuses on closing more installs.</p>
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=voltaxisai@gmail.com&su=Free%20Strategy%20Call%20Request&body=Hi%20VoltAxis%20AI%20team%2C%0A%0AI%27d%20like%20to%20book%20a%20free%20strategy%20call%20to%20learn%20more%20about%20your%20AI%20lead%20generation%20system%20for%20solar%20installers.%0A%0ACompany%20name%3A%0APreferred%20date%2Ftime%3A%0ABest%20contact%20number%3A%0A%0AThanks!" target="_blank" rel="noopener" class="btn-primary">Book Strategy Call →</a>
+        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=voltaxisai@gmail.com&su=Question%20About%20VoltAxis%20AI&body=Hi%20VoltAxis%20AI%20team%2C%0A%0AI%20have%20a%20question%20about%20your%20AI%20lead%20generation%20service%20for%20solar%20installers%3A%0A%0A" target="_blank" rel="noopener" class="btn-ghost">Let's Talk</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="border-t border-white/5 py-14 px-5 md:px-10">
+  <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-10">
+    <div>
+      <div class="font-extrabold text-lg mb-3">VoltAxis <span class="glow-text">AI</span></div>
+      <p class="text-sm text-[var(--gray)]">AI-Powered Growth for Modern Solar Installers.</p>
+    </div>
+    <div>
+      <div class="font-semibold mb-3 text-sm">Navigate</div>
+      <div class="flex flex-col gap-2 text-sm text-[var(--gray)]">
+        <a href="#">Home</a><a href="#deliver">Services</a><a href="#cases">Case Studies</a><a href="#testimonials">Testimonials</a><a href="#faq">FAQ</a><a href="#contact">Contact</a>
+      </div>
+    </div>
+    <div>
+      <div class="font-semibold mb-3 text-sm">Contact</div>
+      <div class="flex flex-col gap-2 text-sm text-[var(--gray)]">
+        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=voltaxisai@gmail.com&su=Question%20About%20VoltAxis%20AI&body=Hi%20VoltAxis%20AI%20team%2C%0A%0A" target="_blank" rel="noopener">voltaxisai@gmail.com</a>
+        <a href="tel:+923145721990">+92 314 5721990</a>
+        <a href="tel:+923338784678">+92 333 8784678</a>
+      </div>
+    </div>
+    <div>
+      <div class="font-semibold mb-3 text-sm">Follow</div>
+      <div class="flex flex-col gap-2 text-sm text-[var(--gray)]">
+        <a href="#">Facebook — Auvero</a>
+        <a href="#">Privacy Policy</a>
+      </div>
+    </div>
+  </div>
+  <div class="text-center text-xs text-[var(--gray)] mt-12">© 2026 VoltAxis AI. All rights reserved.</div>
+</footer>
+
+<script>
+// scroll progress
+const progress = document.getElementById('progress');
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+  progress.style.width = pct + '%';
+});
+
+// mouse glow
+const glow = document.getElementById('mouseGlow');
+window.addEventListener('mousemove', e => {
+  glow.style.setProperty('--mx', e.clientX + 'px');
+  glow.style.setProperty('--my', e.clientY + 'px');
+  document.documentElement.style.setProperty('--mx', e.clientX + 'px');
+  document.documentElement.style.setProperty('--my', e.clientY + 'px');
+});
+
+// reveal on scroll
+const io = new IntersectionObserver(entries => {
+  entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+}, { threshold: .15 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+// counters
+const counters = document.querySelectorAll('.counter');
+const counterIO = new IntersectionObserver(entries => {
+  entries.forEach(en => {
+    if (en.isIntersecting) {
+      const el = en.target, target = +el.dataset.target, suffix = el.dataset.suffix || '';
+      let cur = 0; const step = Math.max(target / 60, 1);
+      const tick = () => { cur += step; if (cur >= target) { el.textContent = target.toLocaleString() + suffix; } else { el.textContent = Math.floor(cur).toLocaleString() + suffix; requestAnimationFrame(tick); } };
+      tick(); counterIO.unobserve(el);
+    }
+  });
+}, { threshold: .5 });
+counters.forEach(c => counterIO.observe(c));
+
+// mobile menu
+const hbBtn = document.getElementById('hamburgerBtn');
+const mobileMenu = document.getElementById('mobileMenu');
+hbBtn.addEventListener('click', () => { hbBtn.classList.toggle('open'); mobileMenu.classList.toggle('open'); });
+document.querySelectorAll('#mobileMenu a').forEach(a => a.addEventListener('click', () => { hbBtn.classList.remove('open'); mobileMenu.classList.remove('open'); }));
+
+// accordion
+document.querySelectorAll('.acc-item .acc-head').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.closest('.acc-item');
+    document.querySelectorAll('.acc-item').forEach(i => { if (i !== item) i.classList.remove('open'); });
+    item.classList.toggle('open');
+  });
+});
+
+// testimonials
+const testimonials = [
+  {name:"Owner, Solar Company", text:"The best investment we've made. Their AI handles everything before our reps even get involved."},
+  {name:"Sales Director, Solar Company", text:"We stopped wasting hours on tire-kickers. Every appointment now shows up ready to sign."},
+  {name:"Founder, Solar Company", text:"VoltAxis paid for itself in the first two weeks. Our calendar has never been this full."},
+  {name:"Operations Lead, Solar Company", text:"The roof analysis and savings estimates build trust before we even pick up the phone."},
+  {name:"CEO, Solar Company", text:"It feels like we hired ten extra reps who never sleep and never miss a follow-up."},
+  {name:"GM, Solar Company", text:"Our close rate jumped the moment we stopped talking to unqualified leads."}
+];
+const track = document.getElementById('testiTrack');
+const dotsWrap = document.getElementById('testiDots');
+testimonials.forEach((t,i) => {
+  const slide = document.createElement('div');
+  slide.className = 'w-full shrink-0 px-4';
+  slide.innerHTML = `<div class="grad-border"><div class="card text-center py-14 px-6">
+    <div class="text-[var(--green)] text-xl mb-5">★★★★★</div>
+    <p class="text-lg md:text-xl leading-relaxed mb-6">"${t.text}"</p>
+    <div class="text-sm text-[var(--gray)]">— ${t.name}</div>
+  </div></div>`;
+  track.appendChild(slide);
+  const dot = document.createElement('button');
+  dot.className = 'w-2.5 h-2.5 rounded-full bg-white/20';
+  dot.addEventListener('click', () => goTo(i));
+  dotsWrap.appendChild(dot);
+});
+let testiIdx = 0;
+function goTo(i){
+  testiIdx = i;
+  track.style.transform = `translateX(-${i*100}%)`;
+  [...dotsWrap.children].forEach((d,j) => d.style.background = j===i ? 'var(--cyan)' : 'rgba(255,255,255,.2)');
+}
+goTo(0);
+setInterval(() => goTo((testiIdx+1) % testimonials.length), 5000);
+</script>
+</body>
+</html>
